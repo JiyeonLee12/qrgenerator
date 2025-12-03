@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ko">
+   <head>
+      <meta charset="UTF-8" />
+      <title>KRWS QR Generator</title>
+      <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
+      <style>
+         body {
+            font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #fafafa;
+            padding: 40px;
+            display: flex;
+            justify-content: center;
+         }
+
+         .container {
+            width: 700px;
+            background: white;
+            padding: 28px;
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+         }
+
+         h1 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            font-weight: 600;
+            color: #333;
+         }
+
+         label {
+            font-size: 13px;
+            font-weight: 500;
+            color: #444;
+            margin-top: 14px;
+            display: block;
+         }
+
+         input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 6px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            box-sizing: border-box;
+            outline: none;
+            transition: border-color 0.2s ease;
+         }
+
+         input:focus {
+            border-color: #5b78f6;
+         }
+
+         button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 20px;
+            background: black;
+            border: none;
+            color: white;
+            font-size: 15px;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+         }
+
+         /* button:hover {
+            background: #3958db;
+         } */
+
+         #qrcode {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+         }
+
+         .json-preview {
+            margin-top: 18px;
+            background: #f5f7fa;
+            padding: 10px;
+            font-size: 12px;
+            border-radius: 6px;
+            white-space: pre-wrap;
+            color: #333;
+         }
+      </style>
+   </head>
+
+   <body>
+      <div class="container">
+         <h1>KRWS QR Generator</h1>
+
+         <label>Network</label>
+         <input id="network" value="polygon.krws" />
+
+         <label>Amount</label>
+         <input id="amount" value="20000" />
+
+         <label>To Address</label>
+         <input id="toAddress" value="0x123123123123" />
+
+         <button id="generate">Generate QR</button>
+
+         <div class="json-preview" id="jsonPreview"></div>
+
+         <div id="qrcode"></div>
+      </div>
+
+      <script>
+         const networkInput = document.getElementById("network");
+         const amountInput = document.getElementById("amount");
+         const toAddressInput = document.getElementById("toAddress");
+         const jsonPreview = document.getElementById("jsonPreview");
+         const qrContainer = document.getElementById("qrcode");
+
+         document.getElementById("generate").addEventListener("click", () => {
+            const payload = {
+               network: networkInput.value,
+               amount: amountInput.value,
+               toAddress: toAddressInput.value,
+            };
+
+            const text = JSON.stringify(payload, null, 0);
+            jsonPreview.textContent = text;
+
+            qrContainer.innerHTML = "";
+            new QRCode(qrContainer, {
+               text,
+               width: 200,
+               height: 200,
+            });
+         });
+      </script>
+   </body>
+</html>
